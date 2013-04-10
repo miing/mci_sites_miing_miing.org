@@ -1,0 +1,40 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName review.miing.org
+ 
+  LogLevel warn
+  ErrorLog /var/log/apache2/review.miing.org.error.log
+  CustomLog /var/log/apache2/review.miing.org.access.log combined
+
+  Redirect / https://review.miing.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName review.miing.org
+
+  # Activate HTTPS on the reverse proxy
+  SSLEngine on
+  SSLCertificateFile	/etc/apache2/ssl/review.miing.org.pem
+  SSLCertificateKeyFile	/etc/apache2/ssl/review.miing.org.key
+
+  SSLProxyEngine on
+
+  ProxyRequests Off
+  ProxyPreserveHost On
+  ProxyVia Off
+  
+  <Proxy *>
+  	Order deny,allow
+    Allow from all
+  </Proxy>
+  
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} !^review.miing.org
+  RewriteRule ^.*$ https://review.miing.org
+  
+  ProxyPass / http://127.0.0.1:8081/
+  ProxyPassReverse / http://127.0.0.1:8081/
+
+  ErrorLog /var/log/apache2/review.miing.org.ssl.error.log
+  CustomLog /var/log/apache2/review.miing.org.ssl.access.log combined
+</VirtualHost>

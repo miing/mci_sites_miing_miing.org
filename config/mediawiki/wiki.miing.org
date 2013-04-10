@@ -1,0 +1,33 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName wiki.miing.org
+  DocumentRoot /home/www-data/wiki.miing.org
+  
+  # Devise URL rewrite rules
+  RewriteEngine on
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+  RewriteRule ^(.*)$ %{DOCUMENT_ROOT}/index.php [L]
+  
+  <Directory /home/www-data/wiki.miing.org>
+  	Options +FollowSymLinks
+    AllowOverride All
+  	Order allow,deny
+  	allow from all
+  </Directory>
+  
+  # Some directories must be protected
+  <Directory /home/www-data/wiki.miing.org/config>
+  	Options -FollowSymLinks
+    AllowOverride None
+  </Directory>
+  
+  <Directory /home/www-data/wiki.miing.org/upload>
+  	Options -FollowSymLinks
+    AllowOverride None
+  </Directory>
+ 
+  LogLevel warn
+  ErrorLog /var/log/apache2/wiki.miing.org.error.log
+  CustomLog /var/log/apache2/wiki.miing.org.access.log combined
+</VirtualHost>

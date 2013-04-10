@@ -1,0 +1,46 @@
+[gerrit]
+	basePath = git
+	canonicalWebUrl = https://review.miing.org
+[database]
+	type = MYSQL
+	hostname = localhost
+	database = review_miing_org
+	username = gerrit
+[auth]
+	type = OPENID
+	cookieSecure= true
+[sendemail]
+	smtpServer = localhost
+[container]
+	user = gerrit
+	javaHome = /usr/lib/jvm/java-6-openjdk/jre
+[core]
+	packedGitWindowSize = 16k
+	packedGitLimit = 400m
+	packedGitOpenFiles = 4096
+[sshd]
+	listenAddress = *:29418
+[httpd]
+	listenUrl = proxy-https://*:8081/
+[cache]
+	directory = cache
+[user]
+	email = samuel.miing@gmail.com
+[commentlink "changeid"]
+	match = "(I[0-9a-f]{8,40})"
+	link = "#q,$1,n,z"
+[commentlink "bugzilla"]
+	match = "(bug\\s+#?)(\\d+)"
+	link = "https://bugs.miing.org/show_bug.cgi?id=$2"
+[theme]
+	backgroundColor = ffffff
+	topMenuColor = ffffff
+	textColor = 264d69
+	trimColor = eef3f5
+	selectionColor = d1e6ea
+	changeTableOutdatedColor = f5cccc
+	tableOddRowColor = ffffff
+	tableEvenRowColor = f5f5ff
+[gitweb]
+	type = gitweb
+	cgi =/usr/lib/cgi-bin/gitweb.cgi

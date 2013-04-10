@@ -1,0 +1,75 @@
+# 
+# Defaults for Jenkins Continuous Integration Server
+#
+
+#########################################################
+# Base variables used to build up Jenkins environment
+#########################################################
+# Jenkins home location
+JENKINS_HOME=/home/jenkins
+
+# UserID to be invoked as (otherwise will run as root; not wise!)
+# JENKINS_USER=jenkins
+
+# Location of the Jenkins war file
+# JENKINS_WAR=$JENKINS_HOME/bin/jenkins.war
+
+# PID file used to store process ID of Jenkins itself
+# JENKINS_PID=$JENKINS_HOME/bin/jenkins.pid
+
+# Log file used to capture all logging from Jenkins
+# JENKINS_LOG=$JENKINS_HOME/log/jenkins.log
+
+# If set to "1" disables Gerrit from starting.
+# NO_START=1
+
+# If set to "0" disables using start-stop-daemon. This may need to
+# be set on SuSE systems.
+# START_STOP_DAEMON=0
+
+
+#########################################################
+# OS limits setup for Jenkins
+#########################################################
+# comment this out to observe /etc/security/limits.conf
+# this is on by default because 
+# http://github.com/jenkinsci/jenkins/commit/2fb288474e980d0e7ff9c4a3b768874835a3e92e
+# reported that Ubuntu's PAM configuration doesn't include 
+# pam_limits.so, and as a result the # of file
+# descriptors are forced to 1024 regardless of 
+# /etc/security/limits.conf
+JENKINS_FDS=8192
+
+
+#########################################################
+# Options below used to set up Java runtime environment
+#########################################################
+# Location of Java that points to java binary.
+# Note that leave it "as-is" if you're not sure where it's
+# JAVA_HOME=
+
+# Heap limit allocated to Jenkins when running in java.
+# m or M below specifies megabytes.
+# For more details on it, take a look at here 
+# http://linux.die.net/man/1/java-java-1.6.0-openjdk
+JENKINS_MEMORY=256m
+
+
+#################################################
+# Arguments below passed to Jenkins war
+#################################################
+# Location of what is extracted from .war file 
+# JENKINS_CONFIG=$JENKINS_HOME/etc/winstone.properties
+
+# Servlet context, important if you want to use apache proxying  
+PREFIX=
+
+# Port for HTTP connector (default 8080; disable with -1)
+# For some reason, switch to another port (8070)
+HTTP_PORT=8070
+
+# port for AJP connector (disabled by default)
+AJP_PORT=-1
+
+# For more information on parameters for Jenkins, take
+# a look at http://code.google.com/p/winstone/wiki/CmdLineOption

@@ -1,0 +1,26 @@
+  <div>
+  <h1 style="color: #0099cc"><a href="https://review.miing.org"><img src="static/miing-logo.png" style="vertical-align:middle;" border="0" /></a></h1>
+  <script type="text/javascript">
+    function getHash() {
+      var hash = window.location.hash;
+      return hash.substring(1); // remove #
+    }
+    window.onload = function() {
+      var hash_arr= getHash().split("/");
+      if (hash_arr[1] == 'c') {
+        var elem = document.getElementById("gerrit_body");
+        elem.className = elem.className + ' patch';
+      }
+    };
+    window.onhashchange = function() {
+      var hash_arr= getHash().split("/");
+      var elem = document.getElementById("gerrit_body");
+      if (hash_arr[1] == 'c') {
+        elem.className = elem.className + ' patch';
+      } else {
+        elem.className = elem.className.replace(' patch', '');
+      }
+    };
+    
+  </script>
+</div>

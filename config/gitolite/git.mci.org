@@ -1,0 +1,29 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName git.mci.org
+ 
+  SetEnv  GITWEB_CONFIG   /home/git/gitweb/gitweb.conf
+ 
+  Alias /gitweb.css /usr/share/gitweb/gitweb.css
+  Alias /git-logo.png /usr/share/gitweb/git-logo.png
+  Alias /git-favicon.png /usr/share/gitweb/git-favicon.png
+ 
+  ScriptAlias /cgi-bin /usr/lib/cgi-bin
+ 
+  DocumentRoot /home/git/repositories
+  <Directory /home/git/repositories>
+    Options Indexes FollowSymlinks ExecCGI
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+ 
+    DirectoryIndex /cgi-bin/gitweb.cgi
+ 
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^.* /cgi-bin/gitweb.cgi/$0 [L,PT]
+  </Directory>
+ 
+  ErrorLog /var/log/apache2/git.mci.org.error.log
+  CustomLog /var/log/apache2/git.mci.org.access.log combined
+</VirtualHost>

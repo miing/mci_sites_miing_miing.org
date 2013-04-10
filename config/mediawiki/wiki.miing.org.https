@@ -1,0 +1,36 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName wiki.miing.org
+ 
+  LogLevel warn
+  ErrorLog /var/log/apache2/wiki.miing.org.error.log
+  CustomLog /var/log/apache2/wiki.miing.org.access.log combined
+
+  Redirect / https://wiki.miing.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName wiki.miing.org
+  DocumentRoot /home/www-data/wiki.miing.org
+
+  # Activate HTTPS on Apache2
+  SSLEngine on
+  SSLCertificateFile	/etc/apache2/ssl/wiki.miing.org.pem
+  SSLCertificateKeyFile	/etc/apache2/ssl/wiki.miing.org.key
+  
+  # Devise URL rewrite rules
+  RewriteEngine on
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-f
+  RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+  RewriteRule ^(.*)$ %{DOCUMENT_ROOT}/index.php [L]
+    
+  <Directory /home/www-data/wiki.miing.org>
+  	Options +FollowSymLinks
+    AllowOverride All
+  	Order allow,deny
+  	allow from all
+  </Directory>
+
+  ErrorLog /var/log/apache2/wiki.miing.org.ssl.error.log
+  CustomLog /var/log/apache2/wiki.miing.org.ssl.access.log combined
+</VirtualHost>

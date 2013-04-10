@@ -1,0 +1,36 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName bugs.miing.org
+ 
+  LogLevel warn
+  ErrorLog /var/log/apache2/bugs.miing.org.error.log
+  CustomLog /var/log/apache2/bugs.miing.org.access.log combined
+
+  Redirect / https://bugs.miing.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName bugs.miing.org
+
+  # Activate HTTPS on Apache2
+  SSLEngine on
+  SSLCertificateFile	/etc/apache2/ssl/bugs.miing.org.pem
+  SSLCertificateKeyFile	/etc/apache2/ssl/bugs.miing.org.key
+
+  DocumentRoot /home/www-data/bugs.miing.org
+  <Directory /home/www-data/bugs.miing.org>
+  	Options +ExecCGI Indexes FollowSymLinks MultiViews
+ 	AddHandler cgi-script .cgi
+ 	DirectoryIndex index.cgi
+    AllowOverride Limit
+  	Order allow,deny
+  	allow from all
+  </Directory>
+  
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} !^bugs.miing.org
+  RewriteRule ^.*$ https://bugs.miing.org
+
+  ErrorLog /var/log/apache2/bugs.miing.org.ssl.error.log
+  CustomLog /var/log/apache2/bugs.miing.org.ssl.access.log combined
+</VirtualHost>

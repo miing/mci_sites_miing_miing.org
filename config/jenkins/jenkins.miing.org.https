@@ -1,0 +1,40 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName jenkins.miing.org
+ 
+  LogLevel warn
+  ErrorLog /var/log/apache2/jenkins.miing.org.error.log
+  CustomLog /var/log/apache2/jenkins.miing.org.access.log combined
+
+  Redirect / https://jenkins.miing.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName jenkins.miing.org
+
+  # Activate HTTPS on the reverse proxy
+  SSLEngine on
+  SSLCertificateFile	/etc/apache2/ssl/jenkins.miing.org.pem
+  SSLCertificateKeyFile	/etc/apache2/ssl/jenkins.miing.org.key
+
+  SSLProxyEngine on
+
+  ProxyRequests Off
+  ProxyPreserveHost On
+  ProxyVia Off
+  
+  <Proxy *>
+  	Order deny,allow
+    Allow from all
+  </Proxy>
+  
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} !^jenkins.miing.org
+  RewriteRule ^.*$ https://jenkins.miing.org
+  
+  ProxyPass / http://127.0.0.1:8070/
+  ProxyPassReverse / http://127.0.0.1:8070/
+
+  ErrorLog /var/log/apache2/jenkins.miing.org.ssl.error.log
+  CustomLog /var/log/apache2/jenkins.miing.org.ssl.access.log combined
+</VirtualHost>
