@@ -1,0 +1,40 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName logs.miing.org
+ 
+  LogLevel warn
+  ErrorLog /var/log/apache2/logs.miing.org.error.log
+  CustomLog /var/log/apache2/logs.miing.org.access.log combined
+
+  Redirect / https://logs.miing.org/
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName logs.miing.org
+
+  # Activate HTTPS on the reverse proxy
+  SSLEngine on
+  SSLCertificateFile	/etc/apache2/ssl/logs.miing.org.pem
+  SSLCertificateKeyFile	/etc/apache2/ssl/logs.miing.org.key
+
+  SSLProxyEngine on
+
+  ProxyRequests Off
+  ProxyPreserveHost On
+  ProxyVia Off
+  
+  <Proxy *>
+  	Order deny,allow
+    Allow from all
+  </Proxy>
+  
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} !^logs.miing.org
+  RewriteRule ^.*$ https://logs.miing.org
+  
+  ProxyPass / http://127.0.0.1:9000/
+  ProxyPassReverse / http://127.0.0.1:9000/
+
+  ErrorLog /var/log/apache2/logs.miing.org.ssl.error.log
+  CustomLog /var/log/apache2/logs.miing.org.ssl.access.log combined
+</VirtualHost>

@@ -1,0 +1,35 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName login.miing.org
+ 
+  LogLevel warn
+  ErrorLog /var/log/apache2/login.miing.org.error.log
+  CustomLog /var/log/apache2/login.miing.org.access.log combined
+
+  Redirect / https://login.miing.org/
+
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName login.miing.org
+
+  # Activate HTTPS on Apache2
+  SSLEngine on
+  SSLCertificateFile	/etc/apache2/ssl/login.miing.org.pem
+  SSLCertificateKeyFile	/etc/apache2/ssl/login.miing.org.key
+
+  DocumentRoot /home/www-data/login.miing.org
+  <Directory /home/www-data/login.miing.org>
+    Order allow,deny
+    Allow from all
+  </Directory>
+ 
+  WSGIScriptAlias / /home/www-data/login.miing.org/dj/wsgi.py
+    
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} !^login.miing.org
+  RewriteRule ^.*$ https://login.miing.org
+
+  ErrorLog /var/log/apache2/login.miing.org.ssl.error.log
+  CustomLog /var/log/apache2/login.miing.org.ssl.access.log combined
+</VirtualHost>

@@ -4,6 +4,7 @@ inherit_specs build/specs/common.sh
 inherit_specs build/specs/dbengine.sh
 inherit_specs build/specs/webserver.sh
 
+inherit_specs build/specs/lms.sh
 inherit_specs build/specs/sso.sh
 inherit_specs build/specs/cms.sh
 inherit_specs build/specs/its.sh
@@ -16,6 +17,11 @@ MCI_SITE_CONFIG=sites/miing/miing.org/config
 MCI_SITE_THEMES=sites/miing/miing.org/themes
 
 MCI_DBENGINE_MYSQL_ROOTPW=xbml610XBML
+MCI_DBENGINE_PGSQL_ROOTPW=xbml610XBML
+
+MCI_LMS=sentry
+MCI_LMS_SENTRY_SITE=logs.miing.org
+MCI_LMS_SENTRY_PGSQL_DBPW=mise610MISE
 
 MCI_SSO=migo
 MCI_SSO_MIGO_SITE=login.miing.org
