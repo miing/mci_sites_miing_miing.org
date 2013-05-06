@@ -104,8 +104,8 @@ fi
 # Check that the rest of base vars are set
 #####################################################
 test -z "$JENKINS_USER" && JENKINS_USER="jenkins"
-test -z "$JENKINS_PID" && JENKINS_PID="$JENKINS_HOME/bin/gerrit.pid"
-test -z "$JENKINS_LOG" && JENKINS_LOG="$JENKINS_HOME/log/jenkins.log"
+test -z "$JENKINS_PID" && JENKINS_PID="$JENKINS_HOME/logs/jenkins.pid"
+test -z "$JENKINS_LOG" && JENKINS_LOG="$JENKINS_HOME/logs/jenkins.log"
 
 
 ##################################################
