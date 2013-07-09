@@ -15,8 +15,8 @@
 
   # Activate HTTPS on Apache2
   SSLEngine on
-  SSLCertificateFile	/etc/apache2/ssl/wiki.miing.org.pem
-  SSLCertificateKeyFile	/etc/apache2/ssl/wiki.miing.org.key
+  SSLCertificateFile	/etc/apache2/ssl/miing.org.crt
+  SSLCertificateKeyFile	/etc/apache2/ssl/miing.org.key
   
   # Devise URL rewrite rules
   RewriteEngine on

@@ -1,6 +1,6 @@
 <VirtualHost *:80>
   ServerAdmin webmaster@localhost
-  ServerName git.mci.org
+  ServerName git.miing.org
  
   SetEnv  GITWEB_CONFIG   /home/git/gitweb/gitweb.conf
  
@@ -24,6 +24,6 @@
     RewriteRule ^.* /cgi-bin/gitweb.cgi/$0 [L,PT]
   </Directory>
  
-  ErrorLog /var/log/apache2/git.mci.org.error.log
-  CustomLog /var/log/apache2/git.mci.org.access.log combined
+  ErrorLog /var/log/apache2/git.miing.org.error.log
+  CustomLog /var/log/apache2/git.miing.org.access.log combined
 </VirtualHost>

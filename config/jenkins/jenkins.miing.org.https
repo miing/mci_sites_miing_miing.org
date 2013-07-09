@@ -14,8 +14,8 @@
 
   # Activate HTTPS on the reverse proxy
   SSLEngine on
-  SSLCertificateFile	/etc/apache2/ssl/jenkins.miing.org.pem
-  SSLCertificateKeyFile	/etc/apache2/ssl/jenkins.miing.org.key
+  SSLCertificateFile	/etc/apache2/ssl/miing.org.crt
+  SSLCertificateKeyFile	/etc/apache2/ssl/miing.org.key
 
   SSLProxyEngine on
 

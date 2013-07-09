@@ -21,7 +21,7 @@
 
 usage() {
     me=`basename "$0"`
-    echo >&2 "Usage: $me {start|stop|restart|check|run|supervise}"
+    echo >&2 "Usage: $me {start|stop|restart|check|run|supervise} [-h home] [-u user] [-p password]"
     exit 1
 }
 
@@ -40,21 +40,72 @@ running() {
 
 
 ##################################################
-# Get the action
-##################################################
-ACTION=$1
-shift
-
-test -z "$NO_START" && NO_START=0
-test -z "$START_STOP_DAEMON" && START_STOP_DAEMON=1
-
-
-##################################################
 # See if there's a default configuration file
 ##################################################
 if test -f /etc/default/jenkins ; then 
   . /etc/default/jenkins
 fi
+
+
+##################################################
+# Get the action
+##################################################
+ACTION=$1
+shift
+
+while test $# -gt 0 ; do
+  case "$1" in
+  # HOME
+  -h|--home)
+    shift
+    JENKINS_HOME_TMP=$1
+    shift
+    ;;
+  -h=*)
+    JENKINS_HOME_TMP=${1##-d=}
+    shift
+    ;;
+  --home=*)
+    JENKINS_HOME_TMP=${1##--home=}
+    shift
+    ;;
+  # USER
+  -u|--user)
+    shift
+    ADMIN_USER=$1
+    shift
+    ;;
+  -u=*)
+    ADMIN_USER=${1##-u=}
+    shift
+    ;;
+  --user=*)
+    ADMIN_USER=${1##--user=}
+    shift
+    ;;
+  # PASSWORD
+  -p|--password)
+    shift
+    ADMIN_PASSWORD=$1
+    shift
+    ;;
+  -p=*)
+    ADMIN_PASSWORD=${1##-p=}
+    shift
+    ;;
+  --password=*)
+    ADMIN_PASSWORD=${1##--password=}
+    shift
+    ;;
+  *)
+    usage
+    ;;
+  esac
+done
+
+test -n "$JENKINS_HOME_TMP" && JENKINS_HOME=$JENKINS_HOME_TMP
+test -z "$NO_START" && NO_START=0
+test -z "$START_STOP_DAEMON" && START_STOP_DAEMON=1
 
 
 ##################################################
@@ -79,7 +130,7 @@ if test -z "$JENKINS_HOME" ; then
   JENKINS_HOME_1=`dirname "$0"`
   JENKINS_HOME_1=`dirname "$JENKINS_HOME"`
   if test -f "${JENKINS_HOME_1}/${JENKINS_INIT_SCRIPT_FILE}" ; then 
-    JENKINS_HOME=${JENKINS_HOME_1} 
+    JENKINS_HOME=${JENKINS_HOME_1}
   fi
 fi
 
@@ -181,7 +232,7 @@ if test -n "$JENKINS_MEMORY" ; then
   JAVA_OPTIONS="-Xmx$JENKINS_MEMORY"
 fi
 
-test -z "$JENKINS_FDS" && GERRIT_FDS=128
+test -z "$JENKINS_FDS" && JENKINS_FDS=128
 test $JENKINS_FDS -lt 1024 && JENKINS_FDS=1024
 
 
@@ -219,7 +270,7 @@ if test -z "$JENKINS_WAR" -a -n "$JENKINS_USER" ; then
   done
 fi
 if test -z "$JENKINS_WAR" ; then
-  echo >&2 "** ERROR: Cannot find gerrit.war (try setting \$JENKINS_WAR)"
+  echo >&2 "** ERROR: Cannot find jenkins.war (try setting \$JENKINS_WAR)"
   exit 1
 fi
 
@@ -229,6 +280,8 @@ test -n "$JENKINS_CONFIG" && RUN_ARGS="$RUN_ARGS --config=$JENKINS_CONFIG"
 PREFIX="$PREFIX" && RUN_ARGS="$RUN_ARGS --prefix=$PREFIX"
 test -n "$HTTP_PORT" && RUN_ARGS="$RUN_ARGS --httpPort=$HTTP_PORT"
 test -n "$AJP_PORT" && RUN_ARGS="$RUN_ARGS --ajp13Port=$AJP_PORT"
+test -n "$ADMIN_PASSWORD" && RUN_ARGS="$RUN_ARGS --argumentsRealm.passwd.$ADMIN_USER=$ADMIN_PASSWORD"
+test -n "$ADMIN_USER" && RUN_ARGS="$RUN_ARGS --argumentsRealm.roles.$ADMIN_USER=admin"
 if test -n "$JAVA_OPTIONS" ; then
   RUN_ARGS="$JAVA_OPTIONS $RUN_ARGS"
 fi
@@ -390,7 +443,7 @@ case "$ACTION" in
     ;;
 
   run|daemon)
-    echo "Running Gerrit Code Review:"
+    echo "Running Jenkins Continuous Integration:"
 
     if test -f "$JENKINS_PID" ; then
         if running "$JENKINS_PID" ; then
@@ -431,5 +484,8 @@ case "$ACTION" in
     usage
   ;;
 esac
+
+unset ADMIN_USER
+unset ADMIN_PASSWORD
 
 exit 0

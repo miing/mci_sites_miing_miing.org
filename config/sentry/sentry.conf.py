@@ -56,7 +56,7 @@ DATABASES = {
 #     }
 # }
 
-SENTRY_KEY = 'A5SWxL7rbeaAI8KjwQKa9lREWKlgpQvLq/j0TX46jkrOykFqLSzS3g=='
+SENTRY_KEY = ''
 
 # You should configure the absolute URI to Sentry. It will attempt to guess it if you don't
 # but proxies may interfere with this.

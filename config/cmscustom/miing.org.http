@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+  ServerAdmin webmaster@localhost
+  ServerName miing.org
+  ServerAlias www.miing.org
+
+  DocumentRoot /home/www-data/miing.org
+  <Directory /home/www-data/miing.org>
+    AllowOverride None
+    Order allow,deny
+    allow from all
+  </Directory>
+  
+  # Possible values include: debug, info, notice, warn, error, crit,
+  # alert, emerg.
+  LogLevel warn
+  ErrorLog /var/log/apache2/miing.org.error.log
+  CustomLog /var/log/apache2/miing.org.access.log combined
+</VirtualHost>

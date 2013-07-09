@@ -1,6 +1,8 @@
 # 
 # Defaults for Jenkins Continuous Integration Server
 #
+# Copyright (C) 2013 Miing.org <samuel.miing@gmail.com>
+#
 
 #########################################################
 # Base variables used to build up Jenkins environment
@@ -18,9 +20,9 @@ JENKINS_HOME=/home/jenkins
 # JENKINS_PID=$JENKINS_HOME/bin/jenkins.pid
 
 # Log file used to capture all logging from Jenkins
-# JENKINS_LOG=$JENKINS_HOME/log/jenkins.log
+# JENKINS_LOG=$JENKINS_HOME/logs/jenkins.log
 
-# If set to "1" disables Gerrit from starting.
+# If set to "1" disables Jenkins from starting.
 # NO_START=1
 
 # If set to "0" disables using start-stop-daemon. This may need to
@@ -70,6 +72,12 @@ HTTP_PORT=8070
 
 # port for AJP connector (disabled by default)
 AJP_PORT=-1
+
+# Admin user for managing target site against jenkins installation
+ADMIN_USER=
+
+# Password for Admin user
+ADMIN_PASSWORD=
 
 # For more information on parameters for Jenkins, take
 # a look at http://code.google.com/p/winstone/wiki/CmdLineOption

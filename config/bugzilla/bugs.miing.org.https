@@ -14,17 +14,15 @@
 
   # Activate HTTPS on Apache2
   SSLEngine on
-  SSLCertificateFile	/etc/apache2/ssl/bugs.miing.org.pem
-  SSLCertificateKeyFile	/etc/apache2/ssl/bugs.miing.org.key
+  SSLCertificateFile	/etc/apache2/ssl/miing.org.crt
+  SSLCertificateKeyFile	/etc/apache2/ssl/miing.org.key
 
   DocumentRoot /home/www-data/bugs.miing.org
   <Directory /home/www-data/bugs.miing.org>
-  	Options +ExecCGI Indexes FollowSymLinks MultiViews
- 	AddHandler cgi-script .cgi
- 	DirectoryIndex index.cgi
-    AllowOverride Limit
-  	Order allow,deny
-  	allow from all
+  	AddHandler cgi-script .cgi
+  	Options +ExecCGI
+ 	DirectoryIndex index.cgi index.html
+	AllowOverride Limit FileInfo Indexes Options
   </Directory>
   
   RewriteEngine on

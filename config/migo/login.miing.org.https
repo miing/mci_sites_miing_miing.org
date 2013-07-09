@@ -15,11 +15,17 @@
 
   # Activate HTTPS on Apache2
   SSLEngine on
-  SSLCertificateFile	/etc/apache2/ssl/login.miing.org.pem
-  SSLCertificateKeyFile	/etc/apache2/ssl/login.miing.org.key
+  SSLCertificateFile	/etc/apache2/ssl/miing.org.crt
+  SSLCertificateKeyFile	/etc/apache2/ssl/miing.org.key
 
-  DocumentRoot /home/www-data/login.miing.org
-  <Directory /home/www-data/login.miing.org>
+  Alias /assets /home/www-data/login.miing.org/identityprovider/static
+  <Directory /home/www-data/login.miing.org/identityprovider/static>
+    Order allow,deny
+    Allow from all
+  </Directory>
+ 
+  Alias /admin/media /home/www-data/login.miing.org/.env/lib/python2.6/site-packages/nexus/media
+  <Directory /home/www-data/login.miing.org/.env/lib/python2.6/site-packages/nexus/media>
     Order allow,deny
     Allow from all
   </Directory>
